@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- page metadata -->
+  <meta charset="utf-8" />
+  <title>Dewey Decimal Lookup</title>
+
+  <!-- importing external assets -->
+  <script src="assets/js/index.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/styles/styles.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+
+  <button onclick="showTip();" style="border:none;background:none;">
+  <i class="glyphicon glyphicon-question-sign"></i></button>
+
+  <!-- fully centered div -->
+  <div class="hvcenterself" id="main">
+
+
+
+    <!-- input and useless search button -->
+    <input type="text" id="searchBox" placeholder="Search..." onkeyup="search();" />
+    <button id="searchBtn" onclick="search();">
+      <i class="glyphicon glyphicon-search"></i>
+    </button>
+
+    <!-- Results table and counter -->
+    <table class="sortable" id="resultsTable"></table>
+    <br />
+    <div id="resultCount">
+    </div>
+
+  </div>
+
+</body>
+
+</html>

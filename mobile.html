@@ -23,12 +23,15 @@
 
     <br />
 
+    <div class="stickydiv">
+      <!-- input and useless search button -->
+      <input type="text" id="searchBox" placeholder="Search..." onkeyup="search();" />
+      <button id="searchBtn" onclick="search();">
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
+      </div>
 
-    <!-- input and useless search button -->
-    <input type="text" id="searchBox" placeholder="Search..." onkeyup="search();" />
-    <button id="searchBtn" onclick="search();">
-      <i class="glyphicon glyphicon-search"></i>
-    </button>
+
 
     <!-- Results table and counter -->
     <table class="sortable" id="resultsTable">

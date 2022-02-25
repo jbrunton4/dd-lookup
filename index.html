@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
-<body onload="onReady();">
+<body onload="onReadyDesktop();">
 
   <button onclick="showTip();" style="border:none;background:none;">
     <i class="glyphicon glyphicon-question-sign"></i></button>
@@ -25,11 +25,12 @@
 
     <br />
 
-    <!-- input and useless search button -->
-    <input type="text" id="searchBox" placeholder="Search..." onkeyup="search();" />
-    <button id="searchBtn" onclick="search();">
-      <i class="glyphicon glyphicon-search"></i>
-    </button>
+      <!-- input and useless search button -->
+      <input type="text" id="searchBox" placeholder="Search..." onkeyup="search();" />
+      <button id="searchBtn" onclick="search();">
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
+
 
     <!-- Results table and counter -->
     <table class="sortable" id="resultsTable"></table>

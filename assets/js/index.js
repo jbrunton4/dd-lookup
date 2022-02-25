@@ -8,7 +8,7 @@ window.isMobileBrowser = function() {
   return check;
 };
 
-function onReady() {
+function onReadyDesktop() {
   if (window.isMobileBrowser()) {
     window.location.href = "mobile.html";
   }

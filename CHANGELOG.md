@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   More detailed error messages when an invalid number search is performed
 -   A funding page with links to charities
+- Favicon to all pages
 
 ### Fixed
 

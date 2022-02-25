@@ -23,7 +23,7 @@ body {
   border-radius: 12px;
   padding: 2%;
   width: 80%;
-  max-height: 80%;
+  height: 80%;
   overflow-y: auto;
   background-color: rgba(255, 255, 255, .4);
   text-align: center;
@@ -36,6 +36,8 @@ body {
   border-radius: 12px;
   padding: 2%;
   width: 80%;
+  min-height: 50px;
+  font-size: 20px;
   transition-duration: .2s;
 }
 

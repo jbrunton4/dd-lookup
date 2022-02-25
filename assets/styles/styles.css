@@ -49,6 +49,7 @@ body {
 
 #main #searchBtn {
   border: none;
+  padding: 5px;
   background: none;
   transition-duration: .2s;
 }

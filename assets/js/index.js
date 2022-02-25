@@ -7,13 +7,6 @@ function search() {
   // grab the search term through DOM access
   var searchTerm = document.getElementById("searchBox").value;
 
-  // if the search is empty, destroy the table and stop considering
-  if (searchTerm.length == 0) {
-    document.getElementById("resultsTable").innerHTML = "";
-    document.getElementById("resultCount").innerHTML = "";
-    return;
-  }
-
   // add the table headers
   var tableContents = `<br /><br />
   <tr>
@@ -21,49 +14,92 @@ function search() {
       <th>Classification</th>
     </tr>`;
 
-  // create a counter for results
-  var resultCounter = 0;
+  // if the search is empty, destroy the table and stop considering
+  if (searchTerm.length == 0) {
+    document.getElementById("resultsTable").innerHTML = "";
+    document.getElementById("resultCount").innerHTML = "";
+    return;
+  }
 
   // special character for all records
   if (searchTerm == "*") {
 
+    // create an empty records table
     var records = [];
 
+    // push all data to the records table, formatting as we go
     for (var i = 0; i < hundreds.length; i++) {
       resultCounter++;
       records.push(`<tr>
               <td>${hundreds[i].substring(0,3)}-${hundreds[i].substring(0,1)}99</td>
               <td>${hundreds[i].substring(8, hundreds[i].length)}</td>
             </tr>`);
-          }
-      for (var j = 0; j < tens.length; j++) {
-        resultCounter++;
-        records.push(`<tr>
+    }
+    for (var j = 0; j < tens.length; j++) {
+      resultCounter++;
+      records.push(`<tr>
                     <td>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
                     <td>${tens[j].substring(8, tens[j].length)}</td>
                   </tr>`);
-                }
-        for (var k = 0; k < ones.length; k++) {
-          resultCounter++;
-          records.push(`<tr>
+    }
+    for (var k = 0; k < ones.length; k++) {
+      resultCounter++;
+      records.push(`<tr>
                           <td>${ones[k].substring(0,3)}</td>
                           <td>${ones[k].substring(4, ones[k].length)}</td>
                         </tr>`);
-        }
+    }
 
-
+    // sort the records table and format it as a string
     records.sort()
-    records.forEach(function (item, index) {
+    records.forEach(function(item, index) {
       tableContents += item;
-  });
+    });
 
+    // output
     document.getElementById("resultsTable").innerHTML = tableContents;
     document.getElementById("resultCount").innerHTML = `${resultCounter} matching results.`;
     return;
   }
 
+  // special phrase for breakdown
+  if (searchTerm.toLowerCase() == "getbreakdown") {
+    let c = prompt("Classification Breakdown: Enter Classification...", "");
+    if (c.length != 3) {
+      alert("Error: Length of input must be exactly 3.");
+    } else if (isNaN(c)) {
+      alert("Error: Input must be a valid number.");
+    } else {
+      alert(getClassificationBreakdown(c));
+    }
+
+    document.getElementById("searchBox").value = "";
+    return;
+
+
+  }
+
+  // if is number, but is too specific, show error messages
+  if ((!(isNaN(searchTerm))) && searchTerm < 0) {
+    tableContents = "<h3>❓ Invalid Query ❓</h3><br />It looks like you've searched for a number lower than 0. Please try searching for a word, phrase, or any number from 0-999.</h3>";
+    document.getElementById("resultsTable").innerHTML = tableContents;
+    document.getElementById("resultCount").innerHTML = "";
+    return;
+  } else if ((!(isNaN(searchTerm))) && searchTerm >= 1000) {
+    tableContents = "<h3>❓ Invalid Query ❓</h3><br />It looks like you've searched for a number greater than or equal to 1000. ˙. Please try searching for a word, phrase, or any number from 0-999.</h3>";
+    document.getElementById("resultsTable").innerHTML = tableContents;
+    document.getElementById("resultCount").innerHTML = "";
+  } else if ((!(isNaN(searchTerm))) && searchTerm.length > 3) {
+    tableContents = "<h3>⚠️ Too specific!⚠️</h3><br />More specific searches coming soon...</h3>";
+    document.getElementById("resultsTable").innerHTML = tableContents;
+    document.getElementById("resultCount").innerHTML = "";
+    return;
+  }
+
   // if NaN, search via text; otherwise, search via number
   if (isNaN(searchTerm)) {
+
+    var resultCounter = 0;
 
     // loop through and create rows for found results
     for (var k = 0; k < ones.length; k++) {
@@ -76,106 +112,65 @@ function search() {
       }
     }
 
+    if (resultCounter == 0) {
+      tableContents = "<h3>🔎 No Results Found 🔍</h3><br />Your search didn't match any results.</h3>";
+      document.getElementById("resultsTable").innerHTML = tableContents;
+      document.getElementById("resultCount").innerHTML = "";
+      return;
+    }
+
     document.getElementById("resultsTable").innerHTML = tableContents;
     document.getElementById("resultCount").innerHTML = `${resultCounter} matching results.`;
 
-    return;
-
-
-  }
-
-
-
-  // if the specificity is 10^2, search through 100s, 10s, 1s in order
-  // do the same for specificity of 10^1 and 10^0
-  // show an error if too specific
-  if (searchTerm.length == 1) {
-
+  } else {
+    // search through the data and catalog any matching records
+    var r1 = [];
     for (var i = 0; i < hundreds.length; i++) {
       if (hundreds[i].startsWith(searchTerm)) {
-
-        resultCounter++;
-
-        tableContents += `<tr>
+        r1.push(`<tr>
               <td>${hundreds[i].substring(0,3)}-${hundreds[i].substring(0,1)}99</td>
               <td>${hundreds[i].substring(8, hundreds[i].length)}</td>
-            </tr>`;
-
-        for (var j = 0; j < tens.length; j++) {
-
-          if (tens[j].startsWith(searchTerm)) {
-
-            resultCounter++;
-            tableContents += `<tr>
-                    <td>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
-                    <td>${tens[j].substring(8, tens[j].length)}</td>
-                  </tr>`;
-
-            for (var k = 0; k < ones.length; k++) {
-
-
-
-              if (ones[k].startsWith(searchTerm)) {
-
-                resultCounter++;
-                tableContents += `<tr>
-                          <td>${ones[k].substring(0,3)}</td>
-                          <td>${ones[k].substring(4, ones[k].length)}</td>
-                        </tr>`;
-              }
-            }
-          }
-        }
-
+            </tr>`);
       }
+
     }
-
-  } else if (searchTerm.length == 2) {
+    var r2 = [];
     for (var j = 0; j < tens.length; j++) {
-
       if (tens[j].startsWith(searchTerm)) {
+        r2.push(`<tr>
+                <td>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
+                <td>${tens[j].substring(8, tens[j].length)}</td>
+              </tr>`);
+      }
 
-        resultCounter++;
-        tableContents += `<tr>
-              <td>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
-              <td>${tens[j].substring(8, tens[j].length)}</td>
-            </tr>`;
-
-        for (var k = 0; k < ones.length; k++) {
-
-
-
-          if (ones[k].startsWith(searchTerm)) {
-
-            resultCounter++;
-            tableContents += `<tr>
+    }
+    var r3 = [];
+    for (var k = 0; k < ones.length; k++) {
+      if (ones[k].startsWith(searchTerm)) {
+        r3.push(`<tr>
                     <td>${ones[k].substring(0,3)}</td>
                     <td>${ones[k].substring(4, ones[k].length)}</td>
-                  </tr>`;
-          }
-        }
+                  </tr>`);
       }
+
     }
-  } else if (searchTerm.length == 3) {
-    for (var k = 0; k < ones.length; k++) {
 
+    // sort the arrays
+    r1.sort();
+    r2.sort();
+    r3.sort();
 
+    // concatonate these sorted arrays into records
+    var records = r1.concat(r2, r3);
 
-      if (ones[k].startsWith(searchTerm)) {
-        resultCounter++;
-        tableContents += `<tr>
-              <td>${ones[k].substring(0,3)}</td>
-              <td>${ones[k].substring(4, ones[k].length)}</td>
-            </tr>`;
-      }
-    }
-  } else {
-    tableContents = "<h3>⚠️ Too specific!⚠️</h3><br />More specific searches coming soon...</h3>";
+    // change this record array into a string
+    records.forEach(function(item, index) {
+      tableContents += item;
+    });
+    document.getElementById("resultsTable").innerHTML = tableContents;
+    document.getElementById("resultCount").innerHTML = `${records.length} matching results.`;
+
   }
-
-  // output the results
-  document.getElementById("resultsTable").innerHTML = tableContents;
-  document.getElementById("resultCount").innerHTML = `${resultCounter} matching results.`;
 
 }
 
@@ -198,4 +193,33 @@ function showTip() {
       ]
     )
   );
+}
+
+function getClassificationBreakdown(x) {
+
+  var fullClassificationNumber = x.toString();
+
+  var breakdown = "";
+
+  for (var i = 0; i < hundreds.length; i++) {
+    if (hundreds[i].startsWith(fullClassificationNumber.substring(0, 1))) {
+      breakdown += hundreds[i] + " > ";
+    }
+  }
+
+  for (var i = 0; i < tens.length; i++) {
+    if (tens[i].startsWith(fullClassificationNumber.substring(0, 2))) {
+      breakdown += tens[i] + " > ";
+    }
+  }
+
+  for (var i = 0; i < ones.length; i++) {
+    if (ones[i].startsWith(fullClassificationNumber.substring(0, 3))) {
+      breakdown += ones[i];
+    }
+  }
+
+
+
+  return breakdown;
 }

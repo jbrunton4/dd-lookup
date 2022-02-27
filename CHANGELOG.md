@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2022-02-27
+
+### Changed
+- Algorithm for search indexing. Previously would return all records containing
+the search term, sorted by decimal code. Now, returns all records containing the search term,
+prioritising those that begin with the search term, then sorting by decimal code.
+
 ## [1.0.2] - 2022-02-25
 
 ### Added

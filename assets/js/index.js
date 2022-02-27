@@ -20,7 +20,7 @@ function search() {
   // grab the search term through DOM access
   var searchTerm = document.getElementById("searchBox").value;
 
-  // add the table headers
+  // declare the table contents and add the table headers
   var tableContents = `<br /><br />
   <tr>
       <th>Number</th>
@@ -40,7 +40,7 @@ function search() {
     // create an empty records table
     var records = [];
 
-    // push all data to the records table, formatting as we go
+    // push all data to the records array, formatting as it goes
     for (var i = 0; i < hundreds.length; i++) {
       resultCounter++;
       records.push(`<tr>
@@ -112,28 +112,46 @@ function search() {
   // if NaN, search via text; otherwise, search via number
   if (isNaN(searchTerm)) {
 
-    var resultCounter = 0;
-
-    // loop through and create rows for found results
+    var recordsStartingWith = [];
+    var recordsContaining = [];
     for (var k = 0; k < ones.length; k++) {
-      if (ones[k].toLowerCase().includes(searchTerm.toLowerCase())) {
-        resultCounter++;
-        tableContents += `<tr>
+      if (ones[k].toLowerCase().substring(4, ones[k].length).startsWith(searchTerm.toLowerCase())) {
+        // if startsWith, push to the startsWith list
+        recordsStartingWith.push(`<tr>
             <td>${ones[k].substring(0,3)}</td>
             <td>${ones[k].substring(4, ones[k].length)}</td>
-          </tr>`;
+          </tr>`);
+      } else if (ones[k].toLowerCase().includes(searchTerm.toLowerCase())) {
+        // if not startsWith, but does include, push to containing list
+        recordsContaining.push(`<tr>
+            <td>${ones[k].substring(0,3)}</td>
+            <td>${ones[k].substring(4, ones[k].length)}</td>
+          </tr>`);
       }
     }
 
-    if (resultCounter == 0) {
+    // @TODO: Should these records be sorted alphabetically before display,
+    // or is it better to keep them in numerical order?  
+
+    // combine the arrays without sorting such that startsWith comes first
+    var records = recordsStartingWith.concat(recordsContaining);
+
+    // format into a string
+    records.forEach(function(item, index) {
+      tableContents += item;
+    });
+
+    // if no results, show error message
+    if (records.length == 0) {
       tableContents = "<h3>🔎 No Results Found 🔍</h3><br />Your search didn't match any results.</h3>";
       document.getElementById("resultsTable").innerHTML = tableContents;
       document.getElementById("resultCount").innerHTML = "";
       return;
     }
 
+    // otherwise, display results
     document.getElementById("resultsTable").innerHTML = tableContents;
-    document.getElementById("resultCount").innerHTML = `${resultCounter} matching results.`;
+    document.getElementById("resultCount").innerHTML = `${records.length} matching results.`;
 
   } else {
     // search through the data and catalog any matching records

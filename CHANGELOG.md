@@ -10,9 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.3] - 2022-02-27
 
 ### Changed
-- Algorithm for search indexing. Previously would return all records containing
-the search term, sorted by decimal code. Now, returns all records containing the search term,
-prioritising those that begin with the search term, then sorting by decimal code.
+
+-   Algorithm for search indexing. Previously would return all records containing
+    the search term, sorted by decimal code. Now, returns all records containing the search term,
+    prioritising those that begin with the search term, then sorting by decimal code.
+-   Minor UI change to give the main div on the desktop version a slight box shadow
+
+### Removed
+
+-   The tips button from the desktop site
 
 ## [1.0.2] - 2022-02-25
 
@@ -20,8 +26,8 @@ prioritising those that begin with the search term, then sorting by decimal code
 
 -   More detailed error messages when an invalid number search is performed
 -   A funding page with links to charities
-- Favicon to all pages
-- Separate HTML page for mobile, that users will be sent to automatically
+-   Favicon to all pages
+-   Separate HTML page for mobile, that users will be sent to automatically
 
 ### Fixed
 

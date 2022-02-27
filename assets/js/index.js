@@ -23,11 +23,14 @@ function search() {
   var searchTerm = document.getElementById("searchBox").value;
 
   // declare the table contents and add the table headers
+  // plus an empty records table
+  var records = [];
   var tableContents = `<br /><br />
   <tr>
       <th>Number</th>
       <th>Classification</th>
     </tr>`;
+
 
   // if the search is empty, destroy the table and stop considering
   if (searchTerm.length == 0) {
@@ -39,29 +42,24 @@ function search() {
   // special character for all records
   if (searchTerm == "*") {
 
-    // create an empty records table
-    var records = [];
 
     // push all data to the records array, formatting as it goes
     for (var i = 0; i < hundreds.length; i++) {
-      resultCounter++;
       records.push(`<tr>
-              <td>${hundreds[i].substring(0,3)}-${hundreds[i].substring(0,1)}99</td>
-              <td>${hundreds[i].substring(8, hundreds[i].length)}</td>
+              <td id='classCode'>${hundreds[i].substring(0,3)}-${hundreds[i].substring(0,1)}99</td>
+              <td id='classDescription'>${hundreds[i].substring(8, hundreds[i].length)}</td>
             </tr>`);
     }
     for (var j = 0; j < tens.length; j++) {
-      resultCounter++;
       records.push(`<tr>
-                    <td>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
-                    <td>${tens[j].substring(8, tens[j].length)}</td>
+                    <td id='classCode'>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
+                    <td id='classDescription'>${tens[j].substring(8, tens[j].length)}</td>
                   </tr>`);
     }
     for (var k = 0; k < ones.length; k++) {
-      resultCounter++;
       records.push(`<tr>
-                          <td>${ones[k].substring(0,3)}</td>
-                          <td>${ones[k].substring(4, ones[k].length)}</td>
+                          <td id='classCode'>${ones[k].substring(0,3)}</td>
+                          <td id='classDescription'>${ones[k].substring(4, ones[k].length)}</td>
                         </tr>`);
     }
 
@@ -73,25 +71,8 @@ function search() {
 
     // output
     document.getElementById("resultsTable").innerHTML = tableContents;
-    document.getElementById("resultCount").innerHTML = `${resultCounter} matching results.`;
+    document.getElementById("resultCount").innerHTML = `${records.length} matching results.`;
     return;
-  }
-
-  // special phrase for breakdown
-  if (searchTerm.toLowerCase() == "getbreakdown") {
-    let c = prompt("Classification Breakdown: Enter Classification...", "");
-    if (c.length != 3) {
-      alert("Error: Length of input must be exactly 3.");
-    } else if (isNaN(c)) {
-      alert("Error: Input must be a valid number.");
-    } else {
-      alert(getClassificationBreakdown(c));
-    }
-
-    document.getElementById("searchBox").value = "";
-    return;
-
-
   }
 
   // if is number, but is too specific, show error messages
@@ -120,14 +101,14 @@ function search() {
       if (ones[k].toLowerCase().substring(4, ones[k].length).startsWith(searchTerm.toLowerCase())) {
         // if startsWith, push to the startsWith list
         recordsStartingWith.push(`<tr>
-            <td>${ones[k].substring(0,3)}</td>
-            <td>${ones[k].substring(4, ones[k].length)}</td>
+            <td id='classCode'>${ones[k].substring(0,3)}</td>
+            <td id='classDescription'>${ones[k].substring(4, ones[k].length)}</td>
           </tr>`);
       } else if (ones[k].toLowerCase().includes(searchTerm.toLowerCase())) {
         // if not startsWith, but does include, push to containing list
         recordsContaining.push(`<tr>
-            <td>${ones[k].substring(0,3)}</td>
-            <td>${ones[k].substring(4, ones[k].length)}</td>
+            <td id='classCode'>${ones[k].substring(0,3)}</td>
+            <td id='classDescription'>${ones[k].substring(4, ones[k].length)}</td>
           </tr>`);
       }
     }
@@ -136,33 +117,22 @@ function search() {
     // or is it better to keep them in numerical order?
 
     // combine the arrays without sorting such that startsWith comes first
-    var records = recordsStartingWith.concat(recordsContaining);
+    records = recordsStartingWith.concat(recordsContaining);
 
     // format into a string
     records.forEach(function(item, index) {
       tableContents += item;
     });
 
-    // if no results, show error message
-    if (records.length == 0) {
-      tableContents = "<h3>🔎 No Results Found 🔍</h3><br />Your search didn't match any results.</h3>";
-      document.getElementById("resultsTable").innerHTML = tableContents;
-      document.getElementById("resultCount").innerHTML = "";
-      return;
-    }
-
-    // otherwise, display results
-    document.getElementById("resultsTable").innerHTML = tableContents;
-    document.getElementById("resultCount").innerHTML = `${records.length} matching results.`;
-
   } else {
+
     // search through the data and catalog any matching records
     var r1 = [];
     for (var i = 0; i < hundreds.length; i++) {
       if (hundreds[i].startsWith(searchTerm)) {
         r1.push(`<tr>
-              <td>${hundreds[i].substring(0,3)}-${hundreds[i].substring(0,1)}99</td>
-              <td>${hundreds[i].substring(8, hundreds[i].length)}</td>
+              <td id='classCode'>${hundreds[i].substring(0,3)}-${hundreds[i].substring(0,1)}99</td>
+              <td id='classDescription'>${hundreds[i].substring(8, hundreds[i].length)}</td>
             </tr>`);
       }
 
@@ -171,8 +141,8 @@ function search() {
     for (var j = 0; j < tens.length; j++) {
       if (tens[j].startsWith(searchTerm)) {
         r2.push(`<tr>
-                <td>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
-                <td>${tens[j].substring(8, tens[j].length)}</td>
+                <td id='classCode'>${tens[j].substring(0,3)}-${tens[j].substring(0,2)}9</td>
+                <td id='classDescription'>${tens[j].substring(8, tens[j].length)}</td>
               </tr>`);
       }
 
@@ -181,8 +151,8 @@ function search() {
     for (var k = 0; k < ones.length; k++) {
       if (ones[k].startsWith(searchTerm)) {
         r3.push(`<tr>
-                    <td>${ones[k].substring(0,3)}</td>
-                    <td>${ones[k].substring(4, ones[k].length)}</td>
+                    <td id='classCode'>${ones[k].substring(0,3)}</td>
+                    <td id='classDescription'>${ones[k].substring(4, ones[k].length)}</td>
                   </tr>`);
       }
 
@@ -194,20 +164,37 @@ function search() {
     r3.sort();
 
     // concatonate these sorted arrays into records
-    var records = r1.concat(r2, r3);
+    records = r1.concat(r2, r3);
 
     // change this record array into a string
     records.forEach(function(item, index) {
       tableContents += item;
     });
-    document.getElementById("resultsTable").innerHTML = tableContents;
-    document.getElementById("resultCount").innerHTML = `${records.length} matching results.`;
 
   }
 
+  // output
+  document.getElementById("resultsTable").innerHTML = tableContents;
+  document.getElementById("resultCount").innerHTML = `${records.length} matching results.`;
+
+  // if no results, show error message
+  if (records.length == 0) {
+    tableContents = "<h3>🔎 No Results Found 🔍</h3><br />Your search didn't match any results.</h3>";
+    document.getElementById("resultsTable").innerHTML = tableContents;
+    document.getElementById("resultCount").innerHTML = "";
+    return;
+  }
+
+  console.log(records);
+  console.log(records.length);
+
+  // if just one record, show the path to it
+  if (records.length == 1) {
+    var cc = document.getElementById("classCode").innerHTML;
+    document.getElementById("resultCount").innerHTML += `<br /><br />Under ${getClassificationBreakdown(cc.substring(0,3), true)}`;
+  }
+
 }
-
-
 
 
 
@@ -216,11 +203,7 @@ function getRandFromArr(list) {
 }
 
 
-
-
-
-
-function getClassificationBreakdown(x) {
+function getClassificationBreakdown(x, omitLast = false) {
 
   var fullClassificationNumber = x.toString();
 
@@ -234,17 +217,17 @@ function getClassificationBreakdown(x) {
 
   for (var i = 0; i < tens.length; i++) {
     if (tens[i].startsWith(fullClassificationNumber.substring(0, 2))) {
-      breakdown += tens[i] + " > ";
+      breakdown += tens[i];
     }
   }
 
-  for (var i = 0; i < ones.length; i++) {
-    if (ones[i].startsWith(fullClassificationNumber.substring(0, 3))) {
-      breakdown += ones[i];
+  if (omitLast == false) {
+    for (var i = 0; i < ones.length; i++) {
+      if (ones[i].startsWith(fullClassificationNumber.substring(0, 3))) {
+        breakdown += " > " + ones[i];
+      }
     }
   }
-
-
 
   return breakdown;
 }

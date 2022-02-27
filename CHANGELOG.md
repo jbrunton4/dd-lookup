@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.3] - 2022-02-27
 
+### Added
+- Feature where if just one result is present, a breakdown of its categories is shown with the result counter.
+
 ### Changed
 
 -   Algorithm for search indexing. Previously would return all records containing
@@ -16,9 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     prioritising those that begin with the search term, then sorting by decimal code.
 -   Minor UI change to give the main div on the desktop version a slight box shadow
 
+### Fixed
+
+-   Removed a bug caused by old redundant code, that caused no results to be displayed when all were requested.
+
 ### Removed
 
 -   The tips button from the desktop site
+- The getbrekdown search box command
 
 ## [1.0.2] - 2022-02-25
 

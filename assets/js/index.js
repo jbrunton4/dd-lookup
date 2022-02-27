@@ -131,7 +131,7 @@ function search() {
     }
 
     // @TODO: Should these records be sorted alphabetically before display,
-    // or is it better to keep them in numerical order?  
+    // or is it better to keep them in numerical order?
 
     // combine the arrays without sorting such that startsWith comes first
     var records = recordsStartingWith.concat(recordsContaining);
@@ -215,18 +215,8 @@ function getRandFromArr(list) {
 
 
 
-function showTip() {
-  alert(
-    getRandFromArr(
-      [
-        "Search '*' to see all individual classifications.",
-        "You can search via number or summary!",
-        "Mobile device support is coming soon!",
-        "Our UI was inspired by Google and iOS!"
-      ]
-    )
-  );
-}
+
+
 
 function getClassificationBreakdown(x) {
 

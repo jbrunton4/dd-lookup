@@ -7,10 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2022-02-28
+
+### Added
+
+-   New information to info.html
+
+### Changed
+
+-   Renamed funding.html to info.html
+
 ## [1.0.3] - 2022-02-27
 
 ### Added
-- Feature where if just one result is present, a breakdown of its categories is shown with the result counter.
+
+-   Feature where if just one result is present, a breakdown of its categories is shown with the result counter.
 
 ### Changed
 
@@ -26,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 -   The tips button from the desktop site
-- The getbrekdown search box command
+-   The getbrekdown search box command
 
 ## [1.0.2] - 2022-02-25
 

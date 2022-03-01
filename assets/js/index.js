@@ -124,6 +124,10 @@ function search() {
       tableContents += item;
     });
 
+    // Sort the records by the leftmost match of the searchTerm
+    // if you want to sort by number instead, sure, remove this line
+    records = leftmostIndexSort(records, searchTerm);
+
   } else {
 
     // search through the data and catalog any matching records
@@ -185,14 +189,56 @@ function search() {
     return;
   }
 
-  console.log(records);
-  console.log(records.length);
+
 
   // if just one record, show the path to it
   if (records.length == 1) {
     var cc = document.getElementById("classCode").innerHTML;
     document.getElementById("resultCount").innerHTML += `<br /><br />Under ${getClassificationBreakdown(cc.substring(0,3), true)}`;
   }
+
+}
+
+function leftmostIndexSort(arr, sortKey) {
+
+  // I actually don't fully understand why this works
+  // but if it ain't broke, and works relatively effeciently
+  // don't fix it.
+
+  var dict = {}; // this is technically just an Object but oh well
+
+  // populate the dictionary with keys and their substring index
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].indexOf(sortKey) != -1) { // only if substring exists
+      dict[arr[i]] = arr[i].indexOf(sortKey);
+    }
+  }
+
+
+
+  // Create items array because we want to output that
+var items = Object.keys(dict).map(function(key) {
+  return [key, dict[key]];
+});
+
+// Sort the array based on the second element
+items.sort(function(first, second) {
+  return second[1] - first[1];
+});
+
+// reverse
+items = items.reverse();
+
+// create a new array ignoring values, just keys
+var out = [];
+for (const property in items) {
+  out.push(items[property][0]);
+}
+
+// return it
+return out
+
+
 
 }
 

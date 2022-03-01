@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2022-03-01
+
+### Changed
+
+-   Sorting for search by NaN. Previously, search results would come in numerical order.
+    Now, results are sorted by the relevance to the search term, prioritising results
+    where the substring index of the search term in the record is lower, however ignoring
+    indices of -1 (not a substring). 
+
 ## [1.0.4] - 2022-02-28
 
 ### Added
